@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -6,6 +6,15 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  const [data, setData] = useState(["new"]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/tasks')
+      .then(response => response.json())
+      .then(json => setData(json))
+      .catch(error => console.error(error));
+  }, []);
+  console.log(data)
   return (
     <>
       <div>
@@ -16,6 +25,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
+      <h1>DATA {data}</h1>
       <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
