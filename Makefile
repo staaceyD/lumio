@@ -5,7 +5,7 @@ start-be:
 	python3 core/manage.py runserver
 
 migrate:
-	python3 core/manage.py migrate
+	python3 core/manage.py makemigrations; python3 core/manage.py migrate
 	
 init-fe:
 	cd frontend; npm install; npm run build
