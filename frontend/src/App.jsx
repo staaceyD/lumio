@@ -1,9 +1,10 @@
 import './App.css'
+import NavBar from './main/NavBar.jsx'
 
 function App() {
   return (
     <>
-      <h1>lumio</h1>
+      <NavBar>lumio</NavBar>
     </>
   )
 }
