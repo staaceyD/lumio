@@ -10,7 +10,8 @@ class Task(models.Model):
     status = models.CharField(max_length=100, default="Not started")
     priority = models.CharField(max_length=100, null=True, blank=True)
     label = models.CharField(max_length=100, null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="task")
+    # TODO enable when auth added
+    # author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="task")
     due_date = models.DateTimeField(null=True, blank=True)
     minutes_spent = models.IntegerField(null=True, blank=True) 
     position = models.IntegerField(default=0)
@@ -18,8 +19,11 @@ class Task(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        tasks = Task.objects.filter(author=User)
-
+        # # TODO enable when auth added
+        # tasks = Task.objects.filter(author=User)
+        tasks = Task.objects.all()
+        
+        # handle position auto increment
         if tasks.exists() and self._state.adding:
             last_task = tasks.latest('position')
             self.position = int(last_task.position) + 1

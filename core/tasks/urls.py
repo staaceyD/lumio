@@ -1,9 +1,9 @@
 from django.urls import path
 
 from .views import (
-    TasksViewSet,
+    tasks,
 )
 
 urlpatterns = [
-    path("", TasksViewSet.as_view({'get': 'list'}), name="tasks"),
+    path("", tasks, name="tasks"),
 ]
