@@ -15,3 +15,6 @@ start-fe:
 
 gen-api-docs:
 	python3 core/manage.py spectacular --color --file openapi.yml
+
+test-be:
+	python3 core/manage.py test core
