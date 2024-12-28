@@ -8,7 +8,7 @@
 }
 
 .home,
-.team {
+.team .support {
     display: flex;
     height: 90vh;
     align-items: center;
@@ -16,22 +16,6 @@
     font-size: 3rem;
     background-color: #000;
     color: #fff;
-}
-
-/* Navbar CSS */
-.sidebar {
-    background-color: #ffffff;
-    height: 80px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.menu-bars {
-    margin-left: 2rem;
-    font-size: 2rem;
-    background: none;
-    color: #000;
 }
 
 .nav-menu {
@@ -51,7 +35,7 @@
     transition: 450ms;
 }
 
-.nav-text {
+.sidebar-text {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -60,7 +44,7 @@
     height: 60px;
 }
 
-.nav-text a {
+.sidebar-text a {
     text-decoration: none;
     color: #151414;
     font-size: 18px;
@@ -72,7 +56,7 @@
     border-radius: 4px;
 }
 
-.nav-text a:hover {
+.sidebar-text a:hover {
     background-color: #000000;
     color: #fff;
 }

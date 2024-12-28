@@ -1,10 +1,10 @@
 import { useState } from "react";
-import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { SidebarData } from "./SideBarData";
 import { IconContext } from "react-icons";
 import './SideBar.css'
+import Header from "../header/Header";
 
 function SideBar() {
     const [sidebar, setSidebar] = useState(false);
@@ -14,11 +14,7 @@ function SideBar() {
     return (
         <>
             <IconContext.Provider value={{ color: "undefined" }}>
-                <div className="sidebar">
-                    <Link to="#" className="menu-bars">
-                        <FaIcons.FaBars onClick={showSidebar} />
-                    </Link>
-                </div>
+                <Header showSidebar={showSidebar} />
                 <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
                     <ul className="nav-menu-items" onClick={showSidebar}>
                         <li className="sidebar-toggle">

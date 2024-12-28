@@ -5,6 +5,7 @@ export function Home() {
         </div>
     );
 }
+
 export function Team() {
     return (
         <div className="team">
@@ -13,3 +14,10 @@ export function Team() {
     );
 }
 
+export function Support() {
+    return (
+        <div className="support">
+            <h1>Support</h1>
+        </div>
+    );
+}
