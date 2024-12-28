@@ -1,0 +1,33 @@
+.navbar {
+    background-color: #ffffff;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-right {
+    display: flex;
+    justify-content: right;
+}
+
+p.logo {
+    font-size: x-large;
+    justify-content: right;
+    padding-right: 20px;
+}
+
+.menu-bars {
+    margin-left: 2rem;
+    font-size: 2rem;
+    background: none;
+    color: #000;
+}
+
+.user-icon {
+    margin-left: 2rem;
+    font-size: 1.7rem;
+    background: none;
+    color: #000;
+    padding-right: 20px;
+}
