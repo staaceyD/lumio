@@ -9,7 +9,7 @@ from rest_framework.test import APITestCase
 from .models import Task
 
 
-class PostRelatedViewTests(TestCase):
+class TaskRelatedViewTests(TestCase):
     def setUp(self):
         self.task = Task.objects.create(
             title="test title"
