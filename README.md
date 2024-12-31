@@ -1,5 +1,5 @@
 # lumio
-It is full stack web applicationthat uses React on the frontend an Django on the back end.
+It is full stack web application that uses React on the frontend an Django on the back end.
 The purpose of the app is to help users with tasks managemnt, having bunch of useful features 
 ## Table of Contents
 
