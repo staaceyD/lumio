@@ -63,7 +63,6 @@ class TaskRelatedViewTests(TestCase):
         data = {"title": "updated title"}
 
         response = self.client.patch(url, data, content_type="application/json")
-        print(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Task.objects.get().title, "updated title")
 
@@ -83,3 +82,13 @@ class TaskRelatedViewTests(TestCase):
         response = self.client.patch(url, data, content_type="application/json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_delete_multiple_tasks(self):
+        task2 = Task.objects.create(
+            title="test title 2"
+        )
+        url = reverse(f"delete-multiple-tasks", args=[f"{self.task.id},{task2.id}"])
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Task.objects.count(), 0)

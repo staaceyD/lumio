@@ -39,8 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'drf_spectacular',
     'tasks'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'lumio',
+    'DESCRIPTION': 'tasks managemnt app',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
