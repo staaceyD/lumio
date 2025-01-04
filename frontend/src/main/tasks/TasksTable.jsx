@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import './TaskTable.css'
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -27,6 +27,14 @@ const TasksTable = () => {
             .catch(error => console.error(error));
     }, []);
 
+    const tableTheme = themeQuartz.withParams({
+        backgroundColor: "rgb(246, 215, 239)",
+        foregroundColor: "rgb(126, 46, 132)",
+        headerTextColor: "rgb(0, 0, 0)",
+        headerBackgroundColor: "rgb(209, 64, 129)",
+        oddRowBackgroundColor: "rgb(0, 0, 0, 0.03)",
+        headerColumnResizeHandleColor: "rgb(126, 46, 132)",
+    });
 
     const getSelectedRows = () => {
         const selectedRows = gridRef.current.api.getSelectedRows();
@@ -40,6 +48,7 @@ const TasksTable = () => {
                 mode: 'multiRow',
                 enableClickSelection: true,
             }}
+            theme={tableTheme}
             rowData={rowData}
             columnDefs={colDefs}
             defaultColDef={{
