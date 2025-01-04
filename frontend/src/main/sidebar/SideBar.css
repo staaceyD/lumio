@@ -8,10 +8,7 @@
 }
 
 .home {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    margin-left: 32px;
 }
 
 .nav-menu {
@@ -24,6 +21,7 @@
     top: 0;
     left: -100%;
     transition: 850ms;
+    z-index: 10;
 }
 
 .nav-menu.active {
