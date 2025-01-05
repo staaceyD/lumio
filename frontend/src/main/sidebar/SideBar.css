@@ -7,19 +7,13 @@
     font-family: "Lato", sans-serif;
 }
 
-.home,
-.team .support {
-    display: flex;
-    height: 90vh;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    background-color: #000;
-    color: #fff;
+.home {
+    margin-top: 20px;
+    margin-left: 32px;
 }
 
 .nav-menu {
-    background-color: #ffffff;
+    background-color: rgb(246, 215, 239);
     width: 250px;
     height: 100vh;
     display: flex;
@@ -28,6 +22,7 @@
     top: 0;
     left: -100%;
     transition: 850ms;
+    z-index: 10;
 }
 
 .nav-menu.active {
@@ -58,7 +53,7 @@
 
 .sidebar-text a:hover {
     background-color: #000000;
-    color: #fff;
+    color: rgb(246, 215, 239);
 }
 
 .nav-menu-items {
@@ -66,7 +61,7 @@
 }
 
 .sidebar-toggle {
-    background-color: #ffffff;
+    background-color: rgb(246, 215, 239);
     width: 80%;
     height: 80px;
     display: flex;

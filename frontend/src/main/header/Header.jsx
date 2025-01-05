@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './Header.css'
 
 Header.propTypes = {
-    showSidebar: PropTypes.bool,
+    showSidebar: PropTypes.func,
 };
 
 function Header({ showSidebar }) {

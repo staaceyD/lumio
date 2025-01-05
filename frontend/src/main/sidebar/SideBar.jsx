@@ -9,14 +9,14 @@ import Header from "../header/Header";
 function SideBar() {
     const [sidebar, setSidebar] = useState(false);
 
-    const showSidebar = () => setSidebar(!sidebar);
+    const handleShowSidebar = () => setSidebar(!sidebar);
 
     return (
         <>
             <IconContext.Provider value={{ color: "undefined" }}>
-                <Header showSidebar={showSidebar} />
+                <Header showSidebar={handleShowSidebar} />
                 <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
-                    <ul className="nav-menu-items" onClick={showSidebar}>
+                    <ul className="nav-menu-items" onClick={handleShowSidebar}>
                         <li className="sidebar-toggle">
                             <Link to="#" className="menu-bars">
                                 <AiIcons.AiOutlineClose />
