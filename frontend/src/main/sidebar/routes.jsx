@@ -1,12 +1,16 @@
 
 
+import TasksManagementBar from '../tasks/TasksManagementBar';
 import TasksTable from '../tasks/TasksTable';
+import './routes.css';
 
 export function Home() {
     return (
         <div className="home">
-
-            <h2>Home </h2>
+            <div className='head-management'>
+                <h2>Home </h2>
+                <TasksManagementBar />
+            </div>
             <TasksTable />
 
         </div>
