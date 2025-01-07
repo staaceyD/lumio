@@ -30,31 +30,31 @@ const TasksTable = () => {
     const tableTheme = themeQuartz.withParams({
         backgroundColor: "rgb(246, 215, 239)",
         foregroundColor: "rgb(126, 46, 132)",
-        headerTextColor: "rgb(0, 0, 0)",
+        headerTextColor: "rgb(255, 255, 255)",
         headerBackgroundColor: "rgb(209, 64, 129)",
         oddRowBackgroundColor: "rgb(0, 0, 0, 0.03)",
         headerColumnResizeHandleColor: "rgb(126, 46, 132)",
     });
 
-    const getSelectedRows = () => {
-        const selectedRows = gridRef.current.api.getSelectedRows();
-    };
-
+    // const getSelectedRows = () => {
+    //     const selectedRows = gridRef.current.api.getSelectedRows();
+    // };
 
     return (
-        <div className={"task-table"}> <AgGridReact
-            ref={gridRef}
-            rowSelection={{
-                mode: 'multiRow',
-                enableClickSelection: true,
-            }}
-            theme={tableTheme}
-            rowData={rowData}
-            columnDefs={colDefs}
-            defaultColDef={{
-                flex: 1,
-            }}
-        />
+        <div className={"task-table"}>
+            <AgGridReact
+                ref={gridRef}
+                rowSelection={{
+                    mode: 'multiRow',
+                    enableClickSelection: true,
+                }}
+                theme={tableTheme}
+                rowData={rowData}
+                columnDefs={colDefs}
+                defaultColDef={{
+                    flex: 1,
+                }}
+            />
         </div >
     );
 };
