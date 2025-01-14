@@ -3,15 +3,18 @@
 import TasksManagementBar from '../tasks/TasksManagementBar';
 import TasksTable from '../tasks/TasksTable';
 import './routes.css';
+import { useState } from 'react';
 
 export function Home() {
+    const [tasksData, setTasksData] = useState([]);
+
     return (
         <div className="home">
             <div className='head-management'>
                 <h2>Home </h2>
-                <TasksManagementBar />
+                <TasksManagementBar setTasksData={setTasksData} />
             </div>
-            <TasksTable />
+            <TasksTable tasksData={tasksData} setTasksData={setTasksData} />
 
         </div>
     );

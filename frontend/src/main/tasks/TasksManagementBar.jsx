@@ -3,7 +3,7 @@ import './TasksManagementBar.css'
 import TasksModal from "./TaskModal";
 import { createPortal } from 'react-dom';
 
-const TasksManagementBar = () => {
+const TasksManagementBar = ({ setTasksData }) => {
     const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
 
     return (
@@ -13,7 +13,7 @@ const TasksManagementBar = () => {
                 <button className="edit-btn btn"> Edit Task </button>
                 <button onClick={() => setTaskModalIsOpen(true)} className="create-btn btn"> Add Task </button>
             </div >
-            {taskModalIsOpen && createPortal(<TasksModal modalIsOpen={taskModalIsOpen} setModalIsOpen={setTaskModalIsOpen} />, document.body)}
+            {taskModalIsOpen && createPortal(<TasksModal setTasksData={setTasksData} setModalIsOpen={setTaskModalIsOpen} />, document.body)}
 
         </>
     );

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import './TaskTable.css'
 import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
+import { fetchTasks } from "./TasksApi.jsx";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -16,15 +17,11 @@ const colDefs = [
     { field: "note" },
 ]
 
-const TasksTable = () => {
+const TasksTable = ({ tasksData, setTasksData }) => {
     const gridRef = useRef(null);
-    const [rowData, setRowData] = useState([]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/tasks/')
-            .then(response => response.json())
-            .then(json => setRowData(json))
-            .catch(error => console.error(error));
+        fetchTasks(setTasksData)
     }, []);
 
     const tableTheme = themeQuartz.withParams({
@@ -49,7 +46,7 @@ const TasksTable = () => {
                     enableClickSelection: true,
                 }}
                 theme={tableTheme}
-                rowData={rowData}
+                rowData={tasksData}
                 columnDefs={colDefs}
                 defaultColDef={{
                     flex: 1,

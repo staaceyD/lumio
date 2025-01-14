@@ -3,9 +3,10 @@ import Modal from '../common/Modal';
 import Button from '../common/Button';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
+import { addTask } from './TasksApi.jsx';
 
 
-const TasksModal = ({ modalIsOpen, setModalIsOpen }) => {
+const TasksModal = ({ setModalIsOpen, setTasksData }) => {
     const [title, setTaskTitle] = useState('');
     const [description, setDescription] = useState('');
     const [note, setNote] = useState('');
@@ -15,8 +16,7 @@ const TasksModal = ({ modalIsOpen, setModalIsOpen }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log({ title, description, dueDate });
+        addTask({ title, description, note, dueDate });
         handleCloseModal();
     };
 
@@ -70,7 +70,7 @@ const TasksModal = ({ modalIsOpen, setModalIsOpen }) => {
 };
 
 TasksModal.propTypes = {
-    modalIsOpen: PropTypes.bool,
+    setTasksData: PropTypes.func,
     setModalIsOpen: PropTypes.func,
 };
 
