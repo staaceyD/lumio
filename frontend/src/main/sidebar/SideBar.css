@@ -46,7 +46,8 @@
     border-radius: 4px;
 }
 
-.sidebar-text a:hover {
+.sidebar-text a:hover,
+.sidebar-text .active {
     background-color: #000000;
     color: rgb(246, 215, 239);
 }
