@@ -9,7 +9,7 @@ const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
 
     const handleTaskDelete = () => {
         const selectedTasksIds = getSelectedIds();
-        deleteTasks(selectedTasksIds);
+        deleteTasks(selectedTasksIds, setTasksData);
     }
     return (
         <>

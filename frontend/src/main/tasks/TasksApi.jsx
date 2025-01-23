@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:8000';
 
-export async function addTask(task) {
+export async function addTask(task, setTasksData) {
     try {
         const res = await fetch(`${API_URL}/tasks/`, {
             method: 'POST',
@@ -10,6 +10,7 @@ export async function addTask(task) {
             body: JSON.stringify(task),
         });
         const data = await res.json();
+        fetchTasks(setTasksData);
         return data;
     } catch (error) {
         console.error('Error:', error);
@@ -19,7 +20,7 @@ export async function addTask(task) {
 
 }
 
-export async function deleteTasks(taskIds) {
+export async function deleteTasks(taskIds, setTasksData) {
     try {
         const ids = taskIds.join(',')
         await fetch(`${API_URL}/tasks/${ids}`, {
@@ -28,6 +29,7 @@ export async function deleteTasks(taskIds) {
                 'Content-Type': 'application/json',
             },
         });
+        fetchTasks(setTasksData);
 
     } catch (error) {
         console.error('Error:', error);
