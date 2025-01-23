@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import './TaskTable.css'
 import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { fetchTasks } from "./TasksApi.jsx";
+import TasksManagementBar from "./TasksManagementBar.jsx";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -17,11 +18,15 @@ const colDefs = [
     { field: "note" },
 ]
 
-const TasksTable = ({ tasksData, setTasksData }) => {
+const TasksTable = () => {
     const gridRef = useRef(null);
+    const [tasksData, setTasksData] = useState([]);
 
-    useEffect(() => {
-        fetchTasks(setTasksData)
+    const onGridReady = useCallback(() => {
+        fetch('http://127.0.0.1:8000/tasks/')
+            .then((resp) => resp.json())
+            .then((json) => setTasksData(json))
+            .catch(error => console.error(error));
     }, []);
 
     const tableTheme = themeQuartz.withParams({
@@ -33,11 +38,21 @@ const TasksTable = ({ tasksData, setTasksData }) => {
         headerColumnResizeHandleColor: "rgb(126, 46, 132)",
     });
 
-    // const getSelectedRows = () => {
-    //     const selectedRows = gridRef.current.api.getSelectedRows();
-    // };
 
-    return (
+    const getSelectedRowIds = () => {
+        const selectedData = gridRef.current.api.getSelectedRows();
+        console.log(selectedData);
+        let selectedTasksIds = [];
+        if (selectedData) {
+            selectedTasksIds = selectedData.map(task => task.id);
+        }
+        return selectedTasksIds;
+
+    };
+
+
+    return (<>
+        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} />
         <div className={"task-table"}>
             <AgGridReact
                 ref={gridRef}
@@ -47,12 +62,14 @@ const TasksTable = ({ tasksData, setTasksData }) => {
                 }}
                 theme={tableTheme}
                 rowData={tasksData}
+                onGridReady={onGridReady}
                 columnDefs={colDefs}
                 defaultColDef={{
                     flex: 1,
                 }}
             />
         </div >
+    </>
     );
 };
 
