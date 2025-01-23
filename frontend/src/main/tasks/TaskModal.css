@@ -1,0 +1,20 @@
+.task-field {
+    margin-bottom: 15px;
+}
+
+.task-field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.task-field input,
+textarea {
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 40px;
+    padding: 10px;
+    width: 100%;
+}

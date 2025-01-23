@@ -1,11 +1,10 @@
-
-
 import TasksTable from '../tasks/TasksTable';
+import './routes.css';
+import { useState } from 'react';
 
 export function Home() {
     return (
         <div className="home">
-
             <h2>Home </h2>
             <TasksTable />
 

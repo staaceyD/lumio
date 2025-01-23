@@ -48,8 +48,8 @@ def delete_multiple_tasks(request, task_ids):
     deleted_count, _ = Task.objects.filter(id__in=ids).delete()
 
     return Response(
-        {"message": f"{deleted_count} items deleted successfully."},
-        status=status.HTTP_200_OK
+        {"message": f"{deleted_count} tasks deleted successfully"},
+        status=status.HTTP_204_NO_CONTENT,
     )
 
 @extend_schema_view(
