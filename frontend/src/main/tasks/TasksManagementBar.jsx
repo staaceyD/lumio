@@ -3,6 +3,7 @@ import './TasksManagementBar.css'
 import TasksModal from "./TaskModal";
 import { createPortal } from 'react-dom';
 import { deleteTasks } from "./TasksApi";
+import PropTypes from 'prop-types'; 
 
 const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
     const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
@@ -23,6 +24,11 @@ const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
 
         </>
     );
+};
+
+TasksManagementBar.propTypes = {
+    setTasksData: PropTypes.func.isRequired,
+    getSelectedIds: PropTypes.func.isRequired,
 };
 
 export default TasksManagementBar;

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import './TaskTable.css'
 import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
@@ -23,10 +23,7 @@ const TasksTable = () => {
     const [tasksData, setTasksData] = useState([]);
 
     const onGridReady = useCallback(() => {
-        fetch('http://127.0.0.1:8000/tasks/')
-            .then((resp) => resp.json())
-            .then((json) => setTasksData(json))
-            .catch(error => console.error(error));
+        fetchTasks(setTasksData);
     }, []);
 
     const tableTheme = themeQuartz.withParams({
