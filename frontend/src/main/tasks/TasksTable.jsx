@@ -1,26 +1,46 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import './TaskTable.css'
-import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
+import {
+    AllCommunityModule, ModuleRegistry, themeQuartz
+} from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { fetchTasks } from "./TasksApi.jsx";
+import { fetchTasks, updateTask } from "./TasksApi.jsx";
 import TasksManagementBar from "./TasksManagementBar.jsx";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const colDefs = [
-    { field: "title" },
-    { field: "description" },
-    { field: "label" },
-    { field: "priority" },
-    { field: "status" },
-    { field: "time spent" },
-    { field: "last updated" },
-    { field: "note" },
+    { field: "title", cellEditor: "agTextCellEditor", },
+    { field: "description", cellEditor: "agTextCellEditor" },
+    { field: "label", cellEditor: "agTextCellEditor" },
+    { field: "priority", cellEditor: "agTextCellEditor" },
+    { field: "status", cellEditor: "agTextCellEditor" },
+    { field: "time spent", cellEditor: "agNumberCellEditor" },
+    { field: "last updated", editable: false },
+    { field: "note", cellEditor: "agTextCellEditor" },
 ]
 
 const TasksTable = () => {
     const gridRef = useRef(null);
     const [tasksData, setTasksData] = useState([]);
+
+    const defaultColDef = useMemo(() => {
+        return {
+            flex: 1,
+            editable: true,
+        }
+    }, []);
+
+    const cellEditingStoppedListenner = useCallback(
+        (event) => {
+            console.log("edit stopped", event);
+            if (event.valueChanged) {
+                const task = event.data;
+                updateTask(task, setTasksData);
+
+            }
+        },
+        []);
 
     const onGridReady = useCallback(() => {
         fetchTasks(setTasksData);
@@ -38,7 +58,6 @@ const TasksTable = () => {
 
     const getSelectedRowIds = () => {
         const selectedData = gridRef.current.api.getSelectedRows();
-        console.log(selectedData);
         let selectedTasksIds = [];
         if (selectedData) {
             selectedTasksIds = selectedData.map(task => task.id);
@@ -61,9 +80,8 @@ const TasksTable = () => {
                 rowData={tasksData}
                 onGridReady={onGridReady}
                 columnDefs={colDefs}
-                defaultColDef={{
-                    flex: 1,
-                }}
+                defaultColDef={defaultColDef}
+                onCellEditingStopped={cellEditingStoppedListenner}
             />
         </div >
     </>

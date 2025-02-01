@@ -44,3 +44,19 @@ export function fetchTasks(setTasksData) {
         .then(json => setTasksData(json))
         .catch(error => console.error(error));
 }
+
+export async function updateTask(task) {
+    try {
+        await fetch(`${API_URL}/tasks/${task.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(task),
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
