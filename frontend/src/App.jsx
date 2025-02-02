@@ -1,4 +1,3 @@
-import './App.css'
 import SideBar from './main/sidebar/SideBar.jsx'
 
 import {

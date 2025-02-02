@@ -1,15 +1,15 @@
-.task-field {
+.taskField {
     margin-bottom: 15px;
 }
 
-.task-field label {
+.taskField label {
     display: block;
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-.task-field input,
+.taskField input,
 textarea {
     border: 1px solid #D1D1D1;
     border-radius: 4px;

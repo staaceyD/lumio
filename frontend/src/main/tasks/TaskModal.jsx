@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from '../common/Modal';
 import Button from '../common/Button';
 import PropTypes from 'prop-types';
-import './TaskModal.css';
+import styles from './TaskModal.module.css';
 import { addTask } from './TasksApi.jsx';
 
 
@@ -27,7 +27,7 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
                 title="New task"
             >
                 <form onSubmit={handleSubmit}>
-                    <div className='task-field'>
+                    <div className={styles.taskField}>
                         <label >Task Title</label>
                         <input
                             type="text"
@@ -36,7 +36,7 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
                             required
                         />
                     </div>
-                    <div className='task-field'>
+                    <div className={styles.taskField}>
                         <label>Description</label>
                         <textarea
                             value={description}
@@ -44,7 +44,7 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
 
                         />
                     </div>
-                    <div className='task-field'>
+                    <div className={styles.taskField}>
                         <label>Note</label>
                         <textarea
                             value={note}
@@ -52,7 +52,7 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
 
                         />
                     </div>
-                    <div className='task-field'>
+                    <div className={styles.taskField}>
                         <label>Due Date</label>
                         <input
                             type="date"
@@ -61,7 +61,7 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
 
                         />
                     </div>
-                    <Button type="submit">Submit</Button>
+                    <Button style={{ marginRight: '32px' }} type="submit">Submit</Button>
                     <Button type="button" onClick={handleCloseModal}>Cancel</Button>
                 </form>
             </Modal>

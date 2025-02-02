@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useMemo } from "react";
-import './TaskTable.css'
+import styles from './TaskTable.module.css'
 import {
     AllCommunityModule, ModuleRegistry, themeQuartz
 } from "ag-grid-community";
@@ -74,7 +74,7 @@ const TasksTable = () => {
     return (<>
         <Notification message={notification} onClose={() => setNotification('')} />
         <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} />
-        <div className={"task-table"}>
+        <div className={styles.taskTable}>
             <AgGridReact
                 ref={gridRef}
                 rowSelection={{

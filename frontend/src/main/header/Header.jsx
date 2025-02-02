@@ -1,7 +1,7 @@
 import * as FaIcons from "react-icons/fa";
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-import './Header.css'
+import styles from './Header.module.css'
 
 Header.propTypes = {
     showSidebar: PropTypes.func,
@@ -10,15 +10,15 @@ Header.propTypes = {
 function Header({ showSidebar }) {
     return (
         <>
-            <div className="navbar">
-                <Link to="#" className="menu-bars">
+            <div className={styles.navbar}>
+                <Link to="#" className={styles.menuBars}>
                     <FaIcons.FaBars onClick={showSidebar} />
                 </Link>
-                <div className="navbar-right">
-                    <Link to="#" className="user-icon">
+                <div className={styles.navbarRight}>
+                    <Link to="#" className={styles.userIcon}>
                         <FaIcons.FaRegUser />
                     </Link>
-                    <p className="logo">lumio</p>
+                    <p className={styles.logo}>lumio</p>
                 </div>
             </div>
         </>

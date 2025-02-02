@@ -1,9 +1,9 @@
-import './Button.css';
+import styles from './Button.module.css';
 import PropTypes from 'prop-types';
 
-const Button = ({ children }) => {
+const Button = ({ children, ...props }) => {
     return (
-        <button className="btn"> {children} </button>
+        <button className={styles.btn} {...props}> {children} </button>
     );
 };
 
