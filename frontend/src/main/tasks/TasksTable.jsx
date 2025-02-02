@@ -6,6 +6,7 @@ import {
 import { AgGridReact } from "ag-grid-react";
 import { fetchTasks, updateTask } from "./TasksApi.jsx";
 import TasksManagementBar from "./TasksManagementBar.jsx";
+import Notification from '../common/Notification';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -23,6 +24,7 @@ const colDefs = [
 const TasksTable = () => {
     const gridRef = useRef(null);
     const [tasksData, setTasksData] = useState([]);
+    const [notification, setNotification] = useState('');
 
     const defaultColDef = useMemo(() => {
         return {
@@ -37,6 +39,8 @@ const TasksTable = () => {
             if (event.valueChanged) {
                 const task = event.data;
                 updateTask(task, setTasksData);
+                setNotification('Request was sent successfully!');
+                setTimeout(() => setNotification(''), 3000);
 
             }
         },
@@ -68,6 +72,7 @@ const TasksTable = () => {
 
 
     return (<>
+        <Notification message={notification} onClose={() => setNotification('')} />
         <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} />
         <div className={"task-table"}>
             <AgGridReact
