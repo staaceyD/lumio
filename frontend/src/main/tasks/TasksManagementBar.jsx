@@ -16,8 +16,8 @@ const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
     return (
         <>
             <div className={styles.managementBar}>
-                {<><Button onClick={handleTaskDelete} > Delete Task </Button>
-                    <Button> Edit Task </Button></>}
+                {<><Button style={{ "margin-right": "32px" }} onClick={handleTaskDelete} > Delete Task </Button>
+                    <Button style={{ "margin-right": "32px" }}> Edit Task </Button></>}
 
                 <Button onClick={() => setTaskModalIsOpen(true)} > Add Task </Button>
             </div >
