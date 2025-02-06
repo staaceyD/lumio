@@ -2,8 +2,18 @@
     position: fixed;
     z-index: 1000;
     padding: 20px;
-    background-color: #f44336;
+    background-color: white;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     top: 5px;
+    display: flex;
+        align-items: center;
+        right: 0;
+        margin-right: 20px;
+        margin-top: 10px;
+    }
+    
+    .notificationText {
+        color: rgb(126, 46, 132);
+        padding-right: 10px;
 }

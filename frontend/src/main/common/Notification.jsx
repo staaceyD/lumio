@@ -7,7 +7,7 @@ const Notification = ({ message, onClose }) => {
 
     return (
         <div className={styles.notification}>
-            {message}
+            <p className={styles.notificationText}>{message}</p>
             <Button onClick={onClose}>x</Button>
         </div>
     );
