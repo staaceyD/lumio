@@ -25,6 +25,7 @@ const TasksTable = () => {
     const gridRef = useRef(null);
     const [tasksData, setTasksData] = useState([]);
     const [notification, setNotification] = useState('');
+    const [isTaskSelected, setIsTaskSelected] = useState(false);
 
     const defaultColDef = useMemo(() => {
         return {
@@ -35,7 +36,6 @@ const TasksTable = () => {
 
     const cellEditingStoppedListenner = useCallback(
         (event) => {
-            console.log("edit stopped", event);
             if (event.valueChanged) {
                 const task = event.data;
                 updateTask(task, setTasksData);
@@ -70,10 +70,20 @@ const TasksTable = () => {
 
     };
 
+    const onSelectionChanged = () => {
+        const selectedData = gridRef.current.api.getSelectedRows();
+
+        if (selectedData) {
+            setIsTaskSelected((current) => !current);
+        } else {
+            setIsTaskSelected((current) => !current);
+        }
+
+    }
 
     return (<>
         <Notification message={notification} onClose={() => setNotification('')} />
-        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} />
+        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} isTaskSelected={isTaskSelected} />
         <div className={styles.taskTable}>
             <AgGridReact
                 ref={gridRef}
@@ -87,6 +97,7 @@ const TasksTable = () => {
                 columnDefs={colDefs}
                 defaultColDef={defaultColDef}
                 onCellEditingStopped={cellEditingStoppedListenner}
+                onSelectionChanged={onSelectionChanged}
             />
         </div >
     </>

@@ -1,5 +1,6 @@
 .notification {
     position: fixed;
+    right: 0;
     z-index: 1000;
     padding: 20px;
     background-color: white;
@@ -7,10 +8,8 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     top: 5px;
     display: flex;
-        align-items: center;
-        right: 0;
-        margin-right: 20px;
-        margin-top: 10px;
+    align-items: center;
+    margin: 10px 20px 0 0;
     }
     
     .notificationText {

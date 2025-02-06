@@ -6,7 +6,7 @@ import { deleteTasks } from "./TasksApi";
 import PropTypes from 'prop-types'; 
 import Button from "../common/Button";
 
-const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
+const TasksManagementBar = ({ setTasksData, getSelectedIds, isTaskSelected }) => {
     const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
 
     const handleTaskDelete = () => {
@@ -16,8 +16,8 @@ const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
     return (
         <>
             <div className={styles.managementBar}>
-                {<><Button style={{ "margin-right": "32px" }} onClick={handleTaskDelete} > Delete Task </Button>
-                    <Button style={{ "margin-right": "32px" }}> Edit Task </Button></>}
+                {isTaskSelected && <><Button style={{ "marginRight": "32px" }} onClick={handleTaskDelete} > Delete Task </Button>
+                    <Button style={{ "marginRight": "32px" }}> Edit Task </Button></>}
 
                 <Button onClick={() => setTaskModalIsOpen(true)} > Add Task </Button>
             </div >
@@ -30,6 +30,7 @@ const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
 TasksManagementBar.propTypes = {
     setTasksData: PropTypes.func.isRequired,
     getSelectedIds: PropTypes.func.isRequired,
+    isTaskSelected: PropTypes.bool.isRequired,
 };
 
 export default TasksManagementBar;
