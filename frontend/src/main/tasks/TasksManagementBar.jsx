@@ -1,10 +1,12 @@
 import { useState } from "react";
-import './TasksManagementBar.css'
+import styles from './TasksManagementBar.module.css'
 import TasksModal from "./TaskModal";
 import { createPortal } from 'react-dom';
 import { deleteTasks } from "./TasksApi";
+import PropTypes from 'prop-types'; 
+import Button from "../common/Button";
 
-const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
+const TasksManagementBar = ({ setTasksData, getSelectedIds, isTaskSelected }) => {
     const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
 
     const handleTaskDelete = () => {
@@ -13,16 +15,22 @@ const TasksManagementBar = ({ setTasksData, getSelectedIds }) => {
     }
     return (
         <>
-            <div className={"management-bar"}>
-                {<><button onClick={handleTaskDelete} className="delete-btn btn"> Delete Task </button>
-                    <button className="edit-btn btn"> Edit Task </button></>}
+            <div className={styles.managementBar}>
+                {isTaskSelected && <><Button style={{ "marginRight": "32px" }} onClick={handleTaskDelete} > Delete Task </Button>
+                    <Button style={{ "marginRight": "32px" }}> Edit Task </Button></>}
 
-                <button onClick={() => setTaskModalIsOpen(true)} className="create-btn btn"> Add Task </button>
+                <Button onClick={() => setTaskModalIsOpen(true)} > Add Task </Button>
             </div >
             {taskModalIsOpen && createPortal(<TasksModal setTasksData={setTasksData} setModalIsOpen={setTaskModalIsOpen} />, document.body)}
 
         </>
     );
+};
+
+TasksManagementBar.propTypes = {
+    setTasksData: PropTypes.func.isRequired,
+    getSelectedIds: PropTypes.func.isRequired,
+    isTaskSelected: PropTypes.bool.isRequired,
 };
 
 export default TasksManagementBar;

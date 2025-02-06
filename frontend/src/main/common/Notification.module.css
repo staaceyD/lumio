@@ -1,0 +1,18 @@
+.notification {
+    position: fixed;
+    right: 0;
+    z-index: 1000;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    top: 5px;
+    display: flex;
+    align-items: center;
+    margin: 10px 20px 0 0;
+    }
+    
+    .notificationText {
+        color: rgb(126, 46, 132);
+        padding-right: 10px;
+}

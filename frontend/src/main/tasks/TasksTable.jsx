@@ -1,32 +1,53 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import './TaskTable.css'
-import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
+import { useState, useRef, useCallback, useMemo } from "react";
+import styles from './TaskTable.module.css'
+import {
+    AllCommunityModule, ModuleRegistry, themeQuartz
+} from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { fetchTasks } from "./TasksApi.jsx";
+import { fetchTasks, updateTask } from "./TasksApi.jsx";
 import TasksManagementBar from "./TasksManagementBar.jsx";
+import Notification from '../common/Notification';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const colDefs = [
-    { field: "title" },
-    { field: "description" },
-    { field: "label" },
-    { field: "priority" },
-    { field: "status" },
-    { field: "time spent" },
-    { field: "last updated" },
-    { field: "note" },
+    { field: "title", cellEditor: "agTextCellEditor", },
+    { field: "description", cellEditor: "agTextCellEditor" },
+    { field: "label", cellEditor: "agTextCellEditor" },
+    { field: "priority", cellEditor: "agTextCellEditor" },
+    { field: "status", cellEditor: "agTextCellEditor" },
+    { headerName: "Time Spent", field: "minutes_spent", cellEditor: "agNumberCellEditor" },
+    { headerName: "Last Updated", field: "modified_at", editable: false },
+    { field: "note", cellEditor: "agTextCellEditor" },
 ]
 
 const TasksTable = () => {
     const gridRef = useRef(null);
     const [tasksData, setTasksData] = useState([]);
+    const [notification, setNotification] = useState('');
+    const [isTaskSelected, setIsTaskSelected] = useState(false);
+
+    const defaultColDef = useMemo(() => {
+        return {
+            flex: 1,
+            editable: true,
+        }
+    }, []);
+
+    const cellEditingStoppedListenner = useCallback(
+        (event) => {
+            if (event.valueChanged) {
+                const task = event.data;
+                updateTask(task, setTasksData);
+                setNotification('Request was sent successfully!');
+                setTimeout(() => setNotification(''), 3000);
+
+            }
+        },
+        []);
 
     const onGridReady = useCallback(() => {
-        fetch('http://127.0.0.1:8000/tasks/')
-            .then((resp) => resp.json())
-            .then((json) => setTasksData(json))
-            .catch(error => console.error(error));
+        fetchTasks(setTasksData);
     }, []);
 
     const tableTheme = themeQuartz.withParams({
@@ -41,7 +62,6 @@ const TasksTable = () => {
 
     const getSelectedRowIds = () => {
         const selectedData = gridRef.current.api.getSelectedRows();
-        console.log(selectedData);
         let selectedTasksIds = [];
         if (selectedData) {
             selectedTasksIds = selectedData.map(task => task.id);
@@ -50,10 +70,21 @@ const TasksTable = () => {
 
     };
 
+    const onSelectionChanged = () => {
+        const selectedData = gridRef.current.api.getSelectedRows();
+
+        if (selectedData) {
+            setIsTaskSelected((current) => !current);
+        } else {
+            setIsTaskSelected((current) => !current);
+        }
+
+    }
 
     return (<>
-        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} />
-        <div className={"task-table"}>
+        <Notification message={notification} onClose={() => setNotification('')} />
+        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} isTaskSelected={isTaskSelected} />
+        <div className={styles.taskTable}>
             <AgGridReact
                 ref={gridRef}
                 rowSelection={{
@@ -64,9 +95,9 @@ const TasksTable = () => {
                 rowData={tasksData}
                 onGridReady={onGridReady}
                 columnDefs={colDefs}
-                defaultColDef={{
-                    flex: 1,
-                }}
+                defaultColDef={defaultColDef}
+                onCellEditingStopped={cellEditingStoppedListenner}
+                onSelectionChanged={onSelectionChanged}
             />
         </div >
     </>

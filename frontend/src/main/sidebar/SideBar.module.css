@@ -7,7 +7,7 @@
     font-family: "Lato", sans-serif;
 }
 
-.nav-menu {
+.navMenu {
     background-color: rgb(246, 215, 239);
     width: 250px;
     height: 100vh;
@@ -20,12 +20,12 @@
     z-index: 10;
 }
 
-.nav-menu.active {
+.navMenu.active {
     left: 0;
     transition: 450ms;
 }
 
-.sidebar-text {
+.sidebarText {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -34,7 +34,7 @@
     height: 60px;
 }
 
-.sidebar-text a {
+.sidebarText a {
     text-decoration: none;
     color: #151414;
     font-size: 18px;
@@ -46,17 +46,17 @@
     border-radius: 4px;
 }
 
-.sidebar-text a:hover,
-.sidebar-text .active {
+.sidebarText a:hover,
+.sidebarText .active {
     background-color: #000000;
     color: rgb(246, 215, 239);
 }
 
-.nav-menu-items {
+.navMenuItems {
     width: 100%;
 }
 
-.sidebar-toggle {
+.sidebaroggle {
     background-color: rgb(246, 215, 239);
     width: 80%;
     height: 80px;
@@ -67,4 +67,14 @@
 
 span {
     margin-left: 16px;
+}
+
+.menuBars {
+    margin-left: 2rem;
+    font-size: 2rem;
+    background: none;
+    color: #000;
+    align-items: center;
+    height: 80px;
+    display: flex;
 }

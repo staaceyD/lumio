@@ -1,10 +1,9 @@
 import TasksTable from '../tasks/TasksTable';
-import './routes.css';
-import { useState } from 'react';
+import styles from './routes.module.css';
 
 export function Home() {
     return (
-        <div className="home">
+        <div className={styles.home}>
             <h2>Home </h2>
             <TasksTable />
 
@@ -14,7 +13,7 @@ export function Home() {
 
 export function Team() {
     return (
-        <div className="team">
+        <div className={styles.team}>
             <h1>Team</h1>
         </div>
     );
@@ -22,7 +21,7 @@ export function Team() {
 
 export function Support() {
     return (
-        <div className="support">
+        <div className={styles.support}>
             <h1>Support</h1>
         </div>
     );

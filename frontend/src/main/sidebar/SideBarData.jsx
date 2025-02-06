@@ -6,18 +6,18 @@ export const SidebarData = [
         title: "Home",
         path: "/",
         icon: <AiIcons.AiFillHome />,
-        cName: "sidebar-text",
+        cName: "sidebarText",
     },
     {
         title: "Team",
         path: "/team",
         icon: <IoIcons.IoMdPeople />,
-        cName: "sidebar-text",
+        cName: "sidebarText",
     },
     {
         title: "Support",
         path: "/support",
         icon: <IoIcons.IoMdHelpCircle />,
-        cName: "sidebar-text",
+        cName: "sidebarText",
     },
 ];
