@@ -16,8 +16,8 @@ const colDefs = [
     { field: "label", cellEditor: "agTextCellEditor" },
     { field: "priority", cellEditor: "agTextCellEditor" },
     { field: "status", cellEditor: "agTextCellEditor" },
-    { field: "time spent", cellEditor: "agNumberCellEditor" },
-    { field: "last updated", editable: false },
+    { headerName: "Time Spent", field: "minutes_spent", cellEditor: "agNumberCellEditor" },
+    { headerName: "Last Updated", field: "modified_at", editable: false },
     { field: "note", cellEditor: "agTextCellEditor" },
 ]
 
