@@ -10,13 +10,13 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
     const [title, setTaskTitle] = useState('');
     const [description, setDescription] = useState('');
     const [note, setNote] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    const [dueDate, setDueDate] = useState(undefined);
 
     function handleCloseModal() { setModalIsOpen((currentModalState) => !currentModalState); }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addTask({ title, description, note, dueDate }, setTasksData);
+        addTask({ title, description, note, due_date: dueDate }, setTasksData);
         handleCloseModal();
     };
 

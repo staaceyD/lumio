@@ -2,6 +2,7 @@ const API_URL = 'http://localhost:8000';
 
 export async function addTask(task, setTasksData) {
     try {
+        console.log('task', task)
         const res = await fetch(`${API_URL}/tasks/`, {
             method: 'POST',
             headers: {
