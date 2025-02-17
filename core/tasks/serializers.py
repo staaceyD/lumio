@@ -10,7 +10,6 @@ class TasksSerializer(serializers.ModelSerializer):
         model = Task
         fields = '__all__'
     
-
 class DeleteTasksSerializer(serializers.Serializer):
     ids = serializers.ListField(
         child=serializers.UUIDField(),
