@@ -12,7 +12,7 @@ class Task(models.Model):
     label = models.CharField(max_length=100, null=True, blank=True)
     # TODO enable when auth added
     # author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="task")
-    due_date = models.DateTimeField(null=True, blank=True)
+    due_date = models.DateField(null=True, blank=True)
     minutes_spent = models.IntegerField(null=True, blank=True) 
     position = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
