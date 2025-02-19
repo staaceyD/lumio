@@ -1,5 +1,5 @@
 init-be:
-	poetry shell; poetry install; python3 core/manage.py migrate
+	poetry shell; poetry install; pre-commit install; python3 core/manage.py migrate
 
 start-be:
 	python3 core/manage.py runserver
