@@ -16,7 +16,7 @@ const TasksModal = ({ setModalIsOpen, setTasksData }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addTask({ title, description, note, due_date: dueDate }, setTasksData);
+        addTask({ title, description, note, due_date: dueDate, minutesSpent:0 }, setTasksData);
         handleCloseModal();
     };
 

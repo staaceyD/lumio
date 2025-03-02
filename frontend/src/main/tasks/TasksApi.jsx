@@ -39,11 +39,25 @@ export async function deleteTasks(taskIds, setTasksData) {
 }
 
 export function fetchTasks(setTasksData) {
-    fetch('http://127.0.0.1:8000/tasks/')
+    fetch(`${API_URL}/tasks/`)
         .then(response => response.json())
         .then(json => setTasksData(json))
         .catch(error => console.error(error));
 }
+
+export async function fetchTask(taskId, setTaskData) {
+    try {
+        const response = await fetch(`${API_URL}/tasks/${taskId}`);
+        if (!response.ok) {
+           throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        setTaskData(json);
+    } catch (error) {
+        console.error(error.message);
+    }
+  }
 
 export async function updateTask(task) {
     try {

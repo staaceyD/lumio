@@ -1,0 +1,61 @@
+.detailSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px 10%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 10% 0 0;
+    justify-content: center;
+}
+
+.dropdownContainer select,
+.dropdownContainer input {
+    min-width: 150px;
+    margin-left: 30px;
+    height: 40px;
+    max-width: fit-content;
+}
+
+.detailSection label {
+    min-width: 100px;
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.detailSection input,
+.detailSection textarea {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 40px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+}
+
+.detailSection input:focus,
+.detailSection textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+.detailSection textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.sumbitButton {
+    margin-right: '32px'
+}

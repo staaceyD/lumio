@@ -3,7 +3,7 @@ import styles from './routes.module.css';
 
 export function Home() {
     return (
-        <div className={styles.home}>
+        <div className={styles.route}>
             <h2>Home </h2>
             <TasksTable />
 
@@ -13,7 +13,7 @@ export function Home() {
 
 export function Team() {
     return (
-        <div className={styles.team}>
+        <div className={styles.route}>
             <h1>Team</h1>
         </div>
     );
@@ -21,7 +21,7 @@ export function Team() {
 
 export function Support() {
     return (
-        <div className={styles.support}>
+        <div className={styles.route}>
             <h1>Support</h1>
         </div>
     );
