@@ -5,7 +5,8 @@ import {
   RouterProvider,
   Outlet
 } from "react-router-dom";
-import { Team, Home, Support } from "./main/sidebar/routes.jsx";
+import { Team, Home, Support } from "./main/routes/sidebarRoutes.jsx";
+import TaskDetails from "./main/routes/taskDetails.jsx";
 
 const AppLayout = () => (
   <>
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/details/:id",
+        element: <TaskDetails />,
       },
       {
         path: "team",

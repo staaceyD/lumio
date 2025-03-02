@@ -7,6 +7,7 @@ import { AgGridReact } from "ag-grid-react";
 import { fetchTasks, updateTask } from "./TasksApi.jsx";
 import TasksManagementBar from "./TasksManagementBar.jsx";
 import Notification from '../common/Notification';
+import { useNavigate } from 'react-router-dom';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -23,10 +24,11 @@ const colDefs = [
 ]
 
 const TasksTable = () => {
+    const navigate = useNavigate();
     const gridRef = useRef(null);
     const [tasksData, setTasksData] = useState([]);
     const [notification, setNotification] = useState('');
-    const [isTaskSelected, setIsTaskSelected] = useState(false);
+    const [taskSelectedData, setTaskSelectedData] = useState({});
 
     const defaultColDef = useMemo(() => {
         return {
@@ -39,7 +41,7 @@ const TasksTable = () => {
         (event) => {
             if (event.valueChanged) {
                 const task = event.data;
-                updateTask(task, setTasksData);
+                updateTask(task);
                 setNotification('Request was sent successfully!');
                 setTimeout(() => setNotification(''), 3000);
 
@@ -75,16 +77,19 @@ const TasksTable = () => {
         const selectedData = gridRef.current.api.getSelectedRows();
 
         if (selectedData) {
-            setIsTaskSelected((current) => !current);
-        } else {
-            setIsTaskSelected((current) => !current);
+            setTaskSelectedData(() => selectedData);
         }
+    }
+
+    const onCellDoubleClicked = (event) => {
+        const selectedCell = event.data;
+        navigate(`/details/${selectedCell.id}`);
 
     }
 
     return (<>
         <Notification message={notification} onClose={() => setNotification('')} />
-        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} isTaskSelected={isTaskSelected} />
+        <TasksManagementBar setTasksData={setTasksData} getSelectedIds={getSelectedRowIds} taskSelectedData={taskSelectedData} />
         <div className={styles.taskTable}>
             <AgGridReact
                 ref={gridRef}
@@ -99,6 +104,7 @@ const TasksTable = () => {
                 defaultColDef={defaultColDef}
                 onCellEditingStopped={cellEditingStoppedListenner}
                 onSelectionChanged={onSelectionChanged}
+                onCellDoubleClicked={onCellDoubleClicked}
             />
         </div >
     </>
