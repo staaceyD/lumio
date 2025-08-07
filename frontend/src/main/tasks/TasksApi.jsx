@@ -53,7 +53,11 @@ export async function fetchTask(taskId, setTaskData) {
         }
 
         const json = await response.json();
-        setTaskData(json);
+
+        const modifiedJson = { ...json, dueDate: json.due_date };
+        delete modifiedJson.due_date;
+
+        setTaskData(modifiedJson);
     } catch (error) {
         console.error(error.message);
     }

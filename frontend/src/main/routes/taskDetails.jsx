@@ -1,28 +1,57 @@
 import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from "react-hook-form";
 import PropTypes from 'prop-types';
 
 import Button from '../common/Button';
 import { useParams } from "react-router-dom";
 import { fetchTask, updateTask } from '../tasks/TasksApi.jsx';
+import CreatableSelect from 'react-select';
 import styles from './taskDetails.module.css';
 
 // TODO: remove this when labels are implemented on BE
-const LABELS = ['','Personal', 'Work', 'Shopping', 'Others']
 
-const PRIORITY = ['','Low', 'Medium', 'High', 'Critical']
-const STATUS = ['Not Started', 'In Progress', 'Completed', 'Blocked']
+const LABELS = [
+    { value: 'personal', label: 'Personal', color: '#00B8D9' },
+    { value: 'work', label: 'Work', color: '#00B8D9'},
+    { value: 'shopping', label: 'Shopping', color: '#00B8D9'},
+    { value: 'others', label: 'Others', color: '#00B8D9'},
+]
+
+const PRIORITY = [
+    { value: 'low', label: 'Low', color: '#00B8D9'},
+    { value: 'medium', label: 'Medium', color: '#00B8D9'},
+    { value: 'high', label: 'High', color: '#00B8D9'},
+    { value: 'critical', label: 'Critical', color: '#00B8D9'}]
+
+const STATUS = [
+    { value: 'not_started', label: 'Not Started', color: '#00B8D9'},
+    { value: 'progress', label: 'In Progress', color: '#00B8D9'},
+    { value: 'completed', label: 'Completed', color: '#00B8D9'},
+    { value: 'blocked', label: 'Blocked', color: '#00B8D9'}]
 
 const TaskDetails = () => {
+    const methods = useForm();
     const { id: taskId } = useParams();
     const [taskData, setTaskData] = useState({});
 
     let updatedTaskData = { ...taskData };
-    
+
     useEffect(() => {
         fetchTask(taskId, setTaskData)
     }, [taskId]);
-    
-    const handleChange = (e) => {
+
+
+    const buildSelectValue = (options, value) => {
+        if (value){
+            const found = options.find(option => option.value.toLowerCase() == value.toLowerCase());
+
+            return {label:found.label, value: value}
+        } else {
+            return ''
+        }
+    }
+
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTaskData(prevState => ({
             ...prevState,
@@ -30,21 +59,29 @@ const TaskDetails = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const hadleSelectChange = (event, actionMeta) => {
+        const name = actionMeta.name;
+        let value = event.value;
+
+        setTaskData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+      }
+    const onSubmit = () => {
         updateTask(updatedTaskData);
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <div className={styles.detailSection}>
                     <label >Task Title</label>
                     <input
                         type="text"
                         name="title"
                         value={taskData.title || ''}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                     />
                 </div>
@@ -53,7 +90,7 @@ const TaskDetails = () => {
                     <textarea
                         name='description'
                         value={taskData.description || ''}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                     />
                 </div>
                 <div className={styles.detailSection}>
@@ -61,53 +98,55 @@ const TaskDetails = () => {
                     <input
                         name='note'
                         value={taskData.note || ''}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                     />
                 </div>
                 <div className={styles.detailSection}>
-                    <div className={styles.dropdownContainer}>
-                        <label>Priority</label>
-                        <select
-                            name="priority"
-                            value={taskData.priority || ''}
-                            onChange={handleChange}
-                        >
-                            {PRIORITY.map((priority) => <option key={priority} value={priority}>{priority}</option>)}
-                        </select>
-                        <label style={{marginLeft:"30px", marginRight:'10px'}}>Status</label>
-                        <select
-                            name="status"
-                            value={taskData.status || ''}
-                            onChange={handleChange}
-                        >
-                            {STATUS.map((priority) => <option key={priority} value={priority}>{priority}</option>)}
-                        </select>
-                    </div>
-                    <div className={styles.dropdownContainer}>
-                        <label>Label</label>
-                        <select
-                            name="label"
-                            value={taskData.label || ''}
-                            onChange={handleChange}
-                        >
-                            {LABELS.map((label) => <option key={label} value={label}>{label}</option>)}
-                        </select>
-
-                        <label style={{marginLeft:"30px", marginRight:'10px'}}>Due Date</label>
+                        <label>Due Date</label>
                         <input
+                            style={{maxWidth: "fit-content"}}
                             name="dueDate"
                             type="date"
-                            value={taskData.dueDate}
-                            onChange={handleChange}
+                            value={taskData.dueDate || ''}
+                            onChange={handleInputChange}
                         />
                     </div>
-                </div>
                 <div className={styles.detailSection}>
-                    <label>Minutes spent:</label> {taskData.minutesSpent}
+                    <div className={styles.dropdownContainer}>
+                        <label className={styles.dropdownLabel}>Priority</label>
+                        <CreatableSelect
+                            name="priority"
+                            options={PRIORITY}
+                            value={buildSelectValue(PRIORITY, taskData.priority)}
+                            isClearable
+                            onChange={hadleSelectChange}
+                        />
+                        <label className={styles.dropdownLabel} style={{marginLeft:"30px", marginRight:'10px'}}>Status</label>
+                        <CreatableSelect
+                            name="status"
+                            options={STATUS}
+                            value={buildSelectValue(STATUS, taskData.status)}
+                            isClearable
+                            onChange={hadleSelectChange}
+                        />
+                        <label className={styles.dropdownLabel} style={{marginLeft:"30px", marginRight:'10px'}}>Label</label>
+                        <CreatableSelect
+                            name="label"
+                            isMulti
+                            value={buildSelectValue(LABELS, taskData.label)}
+                            options={LABELS}
+                            isClearable
+                            onChange={hadleSelectChange}
+                        >
+                        </CreatableSelect>
+                    </div>
+                </div>  
+                <div className={styles.detailSection}>
+                        <label>Minutes spent:</label> {taskData.minutesSpent}       
                 </div>
                 <Button style={{ margin: '20px 10%' }} type="submit">Save task</Button>
             </form>
-        </div >
+        </FormProvider>
     );
 };
 
