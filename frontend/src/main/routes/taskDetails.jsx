@@ -11,23 +11,23 @@ import styles from './taskDetails.module.css';
 // TODO: remove this when labels are implemented on BE
 
 const LABELS = [
-    { value: 'personal', label: 'Personal', color: '#00B8D9' },
-    { value: 'work', label: 'Work', color: '#00B8D9'},
-    { value: 'shopping', label: 'Shopping', color: '#00B8D9'},
-    { value: 'others', label: 'Others', color: '#00B8D9'},
+    { value: 'personal', label: 'Personal'},
+    { value: 'work', label: 'Work'},
+    { value: 'shopping', label: 'Shopping'},
+    { value: 'others', label: 'Others'},
 ]
 
 const PRIORITY = [
-    { value: 'low', label: 'Low', color: '#00B8D9'},
-    { value: 'medium', label: 'Medium', color: '#00B8D9'},
-    { value: 'high', label: 'High', color: '#00B8D9'},
-    { value: 'critical', label: 'Critical', color: '#00B8D9'}]
+    { value: 'low', label: 'Low'},
+    { value: 'medium', label: 'Medium'},
+    { value: 'high', label: 'High'},
+    { value: 'critical', label: 'Critical'}]
 
 const STATUS = [
-    { value: 'not_started', label: 'Not Started', color: '#00B8D9'},
-    { value: 'progress', label: 'In Progress', color: '#00B8D9'},
-    { value: 'completed', label: 'Completed', color: '#00B8D9'},
-    { value: 'blocked', label: 'Blocked', color: '#00B8D9'}]
+    { value: 'not_started', label: 'Not Started'},
+    { value: 'progress', label: 'In Progress'},
+    { value: 'completed', label: 'Completed'},
+    { value: 'blocked', label: 'Blocked'}]
 
 const TaskDetails = () => {
     const methods = useForm();
