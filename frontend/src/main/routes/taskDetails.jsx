@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { FormProvider, useForm } from "react-hook-form";
 import PropTypes from 'prop-types';
 
@@ -52,6 +53,7 @@ const TaskDetails = () => {
     }
 
     const handleInputChange = (e) => {
+
         const { name, value } = e.target;
         setTaskData(prevState => ({
             ...prevState,
@@ -90,6 +92,7 @@ const TaskDetails = () => {
                     <textarea
                         name='description'
                         value={taskData.description || ''}
+
                         onChange={handleInputChange}
                     />
                 </div>
