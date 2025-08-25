@@ -1,160 +1,356 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { useParams, useNavigate } from "react-router-dom";
+import CreatableSelect from "react-select";
 
-import Button from '../common/Button';
-import { useParams } from "react-router-dom";
-import { fetchTask, updateTask } from '../tasks/TasksApi.jsx';
-import CreatableSelect from 'react-select';
-import styles from './taskDetails.module.css';
+import Button from "../common/Button";
+import { fetchTask, updateTask } from "../tasks/TasksApi.jsx";
+import styles from "./taskDetails.module.css";
 
 // TODO: remove this when labels are implemented on BE
-
 const LABELS = [
-    { value: 'personal', label: 'Personal'},
-    { value: 'work', label: 'Work'},
-    { value: 'shopping', label: 'Shopping'},
-    { value: 'others', label: 'Others'},
-]
+  { value: "personal", label: "Personal", color: "#6366F1" },
+  { value: "work", label: "Work", color: "#EF4444" },
+  { value: "shopping", label: "Shopping", color: "#10B981" },
+  { value: "others", label: "Others", color: "#F59E0B" },
+];
 
 const PRIORITY = [
-    { value: 'low', label: 'Low'},
-    { value: 'medium', label: 'Medium'},
-    { value: 'high', label: 'High'},
-    { value: 'critical', label: 'Critical'}]
+  { value: "low", label: "Low", color: "#6B7280" },
+  { value: "medium", label: "Medium", color: "#F59E0B" },
+  { value: "high", label: "High", color: "#EF4444" },
+  { value: "critical", label: "Critical", color: "#DC2626" },
+];
 
 const STATUS = [
-    { value: 'not_started', label: 'Not Started'},
-    { value: 'progress', label: 'In Progress'},
-    { value: 'completed', label: 'Completed'},
-    { value: 'blocked', label: 'Blocked'}]
+  { value: "not_started", label: "Not Started", color: "#6B7280" },
+  { value: "progress", label: "In Progress", color: "#3B82F6" },
+  { value: "completed", label: "Completed", color: "#10B981" },
+  { value: "blocked", label: "Blocked", color: "#EF4444" },
+];
 
 const TaskDetails = () => {
-    const methods = useForm();
-    const { id: taskId } = useParams();
-    const [taskData, setTaskData] = useState({});
+  const methods = useForm({
+    mode: "onBlur",
+  });
+  const { id: taskId } = useParams();
+  const navigate = useNavigate();
 
-    let updatedTaskData = { ...taskData };
+  const [taskData, setTaskData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
-    useEffect(() => {
-        fetchTask(taskId, setTaskData)
-    }, [taskId]);
-
-
-    const buildSelectValue = (options, value) => {
-        if (value){
-            const found = options.find(option => option.value.toLowerCase() == value.toLowerCase());
-
-            return {label:found.label, value: value}
-        } else {
-            return ''
-        }
-    }
-
-    const handleInputChange = (e) => {
-
-        const { name, value } = e.target;
-        setTaskData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
-    const hadleSelectChange = (event, actionMeta) => {
-        const name = actionMeta.name;
-        let value = event.value;
-
-        setTaskData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+  useEffect(() => {
+    const loadTask = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        await fetchTask(taskId, setTaskData);
+      } catch (err) {
+        setError("Failed to load task details. Please try again.");
+        console.error("Error loading task:", err);
+      } finally {
+        setIsLoading(false);
       }
-    const onSubmit = () => {
-        updateTask(updatedTaskData);
     };
 
-    return (
-        <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <div className={styles.detailSection}>
-                    <label >Task Title</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={taskData.title || ''}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.detailSection}>
-                    <label>Description</label>
-                    <textarea
-                        name='description'
-                        value={taskData.description || ''}
+    if (taskId) {
+      loadTask();
+    }
+  }, [taskId]);
 
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className={styles.detailSection}>
-                    <label>Note</label>
-                    <input
-                        name='note'
-                        value={taskData.note || ''}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className={styles.detailSection}>
-                        <label>Due Date</label>
-                        <input
-                            style={{maxWidth: "fit-content"}}
-                            name="dueDate"
-                            type="date"
-                            value={taskData.dueDate || ''}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                <div className={styles.detailSection}>
-                    <div className={styles.dropdownContainer}>
-                        <label className={styles.dropdownLabel}>Priority</label>
-                        <CreatableSelect
-                            name="priority"
-                            options={PRIORITY}
-                            value={buildSelectValue(PRIORITY, taskData.priority)}
-                            isClearable
-                            onChange={hadleSelectChange}
-                        />
-                        <label className={styles.dropdownLabel} style={{marginLeft:"30px", marginRight:'10px'}}>Status</label>
-                        <CreatableSelect
-                            name="status"
-                            options={STATUS}
-                            value={buildSelectValue(STATUS, taskData.status)}
-                            isClearable
-                            onChange={hadleSelectChange}
-                        />
-                        <label className={styles.dropdownLabel} style={{marginLeft:"30px", marginRight:'10px'}}>Label</label>
-                        <CreatableSelect
-                            name="label"
-                            isMulti
-                            value={buildSelectValue(LABELS, taskData.label)}
-                            options={LABELS}
-                            isClearable
-                            onChange={hadleSelectChange}
-                        >
-                        </CreatableSelect>
-                    </div>
-                </div>  
-                <div className={styles.detailSection}>
-                        <label>Minutes spent:</label> {taskData.minutesSpent}       
-                </div>
-                <Button style={{ margin: '20px 10%' }} type="submit">Save task</Button>
-            </form>
-        </FormProvider>
+  const buildSelectValue = (options, value) => {
+    if (value) {
+      const found = options.find(
+        (option) => option.value.toLowerCase() === value.toLowerCase(),
+      );
+      return found ? { label: found.label, value: found.value } : null;
+    }
+    return null;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setTaskData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    // Clear success message when user starts editing
+    if (saveSuccess) {
+      setSaveSuccess(false);
+    }
+  };
+
+  const handleSelectChange = (selectedOption, actionMeta) => {
+    const name = actionMeta.name;
+    const value = selectedOption ? selectedOption.value : null;
+
+    setTaskData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    // Clear success message when user starts editing
+    if (saveSuccess) {
+      setSaveSuccess(false);
+    }
+  };
+
+  const onSubmit = async () => {
+    try {
+      setIsSaving(true);
+      setError(null);
+
+      const updatedData = { ...taskData };
+      await updateTask(updatedData);
+
+      setSaveSuccess(true);
+      // Clear success message after 3 seconds
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err) {
+      setError("Failed to save task. Please try again.");
+      console.error("Error saving task:", err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const getPriorityBadgeStyle = (priority) => {
+    const priorityOption = PRIORITY.find((p) => p.value === priority);
+    if (priorityOption) {
+      return {
+        backgroundColor: priorityOption.color,
+        color: "white",
+        padding: "4px 8px",
+        borderRadius: "4px",
+        fontSize: "12px",
+        fontWeight: "500",
+      };
+    }
+    return {};
+  };
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loadingState}>
+          <div className={styles.spinner}></div>
+          <p>Loading task details...</p>
+        </div>
+      </div>
     );
+  }
+
+  if (error && !taskData.title) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.errorState}>
+          <div className={styles.errorIcon}>⚠️</div>
+          <h3>Unable to Load Task</h3>
+          <p>{error}</p>
+          <Button onClick={() => navigate("/")}>Back to Tasks</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <button
+          className={styles.backButton}
+          onClick={() => navigate("/")}
+          type="button"
+        >
+          ← Back to Tasks
+        </button>
+        <h1 className={styles.title}>Task Details</h1>
+        {taskData.priority && (
+          <span style={getPriorityBadgeStyle(taskData.priority)}>
+            {PRIORITY.find((p) => p.value === taskData.priority)?.label}
+          </span>
+        )}
+      </div>
+
+      {error && (
+        <div className={styles.errorMessage}>
+          <span className={styles.errorIcon}>⚠️</span>
+          {error}
+        </div>
+      )}
+
+      {saveSuccess && (
+        <div className={styles.successMessage}>
+          <span className={styles.successIcon}>✅</span>
+          Task saved successfully!
+        </div>
+      )}
+
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)} className={styles.form}>
+          {/* Main Task Information */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Task Information</h2>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                Task Title <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                className={styles.input}
+                value={taskData.title || ""}
+                onChange={handleInputChange}
+                placeholder="Enter task title..."
+                required
+              />
+              {methods.formState.errors.title && (
+                <span className={styles.errorText}>
+                  {methods.formState.errors.title.message}
+                </span>
+              )}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Description</label>
+              <textarea
+                name="description"
+                className={styles.textarea}
+                value={taskData.description || ""}
+                onChange={handleInputChange}
+                placeholder="Describe the task in detail..."
+                rows={4}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Notes</label>
+              <input
+                type="text"
+                name="note"
+                className={styles.input}
+                value={taskData.note || ""}
+                onChange={handleInputChange}
+                placeholder="Add any additional notes..."
+              />
+            </div>
+          </div>
+
+          {/* Task Scheduling */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Scheduling</h2>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Due Date</label>
+              <input
+                name="dueDate"
+                type="date"
+                className={styles.input}
+                value={taskData.dueDate || ""}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Time Spent</label>
+              <div className={styles.readOnlyField}>
+                <span className={styles.timeSpent}>
+                  {taskData.minutesSpent || 0} minutes
+                </span>
+                <small className={styles.helpText}>
+                  Time is automatically tracked
+                </small>
+              </div>
+            </div>
+          </div>
+
+          {/* Task Properties */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Properties</h2>
+
+            <div className={styles.propertiesGrid}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Priority</label>
+                <CreatableSelect
+                  name="priority"
+                  options={PRIORITY}
+                  value={buildSelectValue(PRIORITY, taskData.priority)}
+                  onChange={handleSelectChange}
+                  placeholder="Select priority..."
+                  className={styles.select}
+                  classNamePrefix="select"
+                  isClearable
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Status</label>
+                <CreatableSelect
+                  name="status"
+                  options={STATUS}
+                  value={buildSelectValue(STATUS, taskData.status)}
+                  onChange={handleSelectChange}
+                  placeholder="Select status..."
+                  className={styles.select}
+                  classNamePrefix="select"
+                  isClearable
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Labels</label>
+                <CreatableSelect
+                  name="label"
+                  options={LABELS}
+                  value={buildSelectValue(LABELS, taskData.label)}
+                  onChange={handleSelectChange}
+                  placeholder="Add labels..."
+                  className={styles.select}
+                  classNamePrefix="select"
+                  isMulti
+                  isClearable
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className={styles.actions}>
+            <Button
+              type="button"
+              onClick={() => navigate("/")}
+              className={styles.cancelButton}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSaving}
+              className={styles.saveButton}
+            >
+              {isSaving ? (
+                <>
+                  <span className={styles.spinner}></span>
+                  Saving...
+                </>
+              ) : (
+                "Save Task"
+              )}
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
+    </div>
+  );
 };
 
 TaskDetails.propTypes = {
-    taskId: PropTypes.string,
+  taskId: PropTypes.string,
 };
 
 export default TaskDetails;
