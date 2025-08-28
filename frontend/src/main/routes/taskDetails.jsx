@@ -5,16 +5,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select";
 
 import Button from "../common/Button";
-import { fetchTask, updateTask } from "../tasks/TasksApi.jsx";
+import { fetchTask, updateTask, fetchLabels, createLabel } from "../tasks/TasksApi.jsx";
 import styles from "./taskDetails.module.css";
 
-// TODO: remove this when labels are implemented on BE
-const LABELS = [
-  { value: "personal", label: "Personal", color: "#6366F1" },
-  { value: "work", label: "Work", color: "#EF4444" },
-  { value: "shopping", label: "Shopping", color: "#10B981" },
-  { value: "others", label: "Others", color: "#F59E0B" },
-];
 
 const PRIORITY = [
   { value: "low", label: "Low", color: "#6B7280" },
@@ -42,8 +35,18 @@ const TaskDetails = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [availableLabels, setAvailableLabels] = useState([]);
 
   useEffect(() => {
+    const loadLabels = async () => {
+      try {
+        const formattedLabels = await fetchLabels()
+        setAvailableLabels(formattedLabels);
+      } catch {
+        setError("Failed to load labels. Please try again.");
+      }
+    };
+
     const loadTask = async () => {
       try {
         setIsLoading(true);
@@ -57,19 +60,40 @@ const TaskDetails = () => {
       }
     };
 
+    loadLabels();
     if (taskId) {
       loadTask();
     }
   }, [taskId]);
 
-  const buildSelectValue = (options, value) => {
-    if (value) {
-      const found = options.find(
-        (option) => option.value.toLowerCase() === value.toLowerCase(),
-      );
-      return found ? { label: found.label, value: found.value } : null;
+  const buildSelectValue = (options, value, isMulti = false) => {
+    if (isMulti) {
+      if (Array.isArray(value) && value.length > 0) {
+        return value
+          .map((val) => {
+            const found = options.find(
+              (option) =>
+                String(option.value) === String(val) ||
+                (typeof val === "string" &&
+                  option.value.toLowerCase() === val.toLowerCase()),
+            );
+            return found ? { label: found.label, value: found.value } : null;
+          })
+          .filter(Boolean);
+      }
+      return [];
+    } else {
+      if (value) {
+        const found = options.find(
+          (option) =>
+            String(option.value) === String(value) ||
+            (typeof value === "string" &&
+              option.value.toLowerCase() === value.toLowerCase()),
+        );
+        return found ? { label: found.label, value: found.value } : null;
+      }
+      return null;
     }
-    return null;
   };
 
   const handleInputChange = (e) => {
@@ -85,13 +109,42 @@ const TaskDetails = () => {
     }
   };
 
+  const handleCreateLabel = async (inputValue) => {
+    try{
+      const formattedLabel = await createLabel(inputValue)
+      // Add to available labels
+      setAvailableLabels((prev) => [...prev, formattedLabel]);
+
+      // Add to current task labels
+      const currentLabels = taskData.labels || [];
+      setTaskData((prevState) => ({
+        ...prevState,
+        labels: [...currentLabels, formattedLabel.value],
+      }));
+    } catch (err) {
+      console.error("Error creating label:", err);
+      return null;
+    }
+  };
+
   const handleSelectChange = (selectedOption, actionMeta) => {
     const name = actionMeta.name;
-    const value = selectedOption ? selectedOption.value : null;
+    let value;
+    let fieldName = name;
+
+    if (name === "labels") {
+      // Handle multi-select for labels
+      value = selectedOption
+        ? selectedOption.map((option) => option.value)
+        : [];
+    } else {
+      // Handle single select for priority and status
+      value = selectedOption ? selectedOption.value : null;
+    }
 
     setTaskData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [fieldName]: value,
     }));
 
     // Clear success message when user starts editing
@@ -305,10 +358,15 @@ const TaskDetails = () => {
               <div className={styles.formGroup}>
                 <label className={styles.label}>Labels</label>
                 <CreatableSelect
-                  name="label"
-                  options={LABELS}
-                  value={buildSelectValue(LABELS, taskData.label)}
+                  name="labels"
+                  options={availableLabels}
+                  value={buildSelectValue(
+                    availableLabels,
+                    taskData.labels,
+                    true,
+                  )}
                   onChange={handleSelectChange}
+                  onCreateOption={handleCreateLabel}
                   placeholder="Add labels..."
                   className={styles.select}
                   classNamePrefix="select"
