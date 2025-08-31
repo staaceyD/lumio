@@ -1,4 +1,24 @@
 .route {
-    margin-top: 20px;
-    margin-left: 32px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+.route h2 {
+    color: #1e293b;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 2rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.route h1 {
+    color: #1e293b;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 2rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
 }
