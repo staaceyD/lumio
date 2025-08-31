@@ -1,20 +1,158 @@
 .taskField {
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.taskField:last-child {
+    margin-bottom: 2rem;
 }
 
 .taskField label {
     display: block;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
-    margin-bottom: 5px;
+    color: #374151;
+    margin-bottom: 0.5rem;
 }
 
 .taskField input,
-textarea {
-    border: 1px solid #D1D1D1;
-    border-radius: 4px;
-    font-size: 14px;
-    height: 40px;
-    padding: 10px;
+.taskField textarea {
     width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    background-color: white;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.taskField input {
+    height: 42px;
+}
+
+.taskField textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.taskField input:focus,
+.taskField textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.taskField input:hover,
+.taskField textarea:hover {
+    border-color: #9ca3af;
+}
+
+.taskField input::placeholder,
+.taskField textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* Button container styling */
+.buttonContainer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 1rem;
+}
+
+.cancelButton {
+    background-color: white !important;
+    color: #6b7280 !important;
+    border: 1px solid #d1d5db !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    border-radius: 0.5rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.cancelButton:hover {
+    background-color: #f9fafb !important;
+    border-color: #9ca3af !important;
+    color: #374151 !important;
+}
+
+.submitButton {
+    background-color: #d14081 !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    border-radius: 0.5rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #f082ac !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(209, 64, 129, 0.3);
+}
+
+.submitButton:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .taskField {
+        margin-bottom: 1rem;
+    }
+
+    .taskField label {
+        font-size: 0.8125rem;
+    }
+
+    .taskField input,
+    .taskField textarea {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.8125rem;
+    }
+
+    .taskField textarea {
+        min-height: 80px;
+    }
+
+    .buttonContainer {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+    }
+
+    .cancelButton,
+    .submitButton {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+/* Focus indicators for accessibility */
+.taskField input:focus,
+.taskField textarea:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: -2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .taskField input,
+    .taskField textarea {
+        border: 2px solid #000;
+    }
+
+    .taskField label {
+        color: #000;
+        font-weight: 700;
+    }
 }

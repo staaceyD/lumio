@@ -1,10 +1,78 @@
 .managementBar {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
-    margin-right: 32px
-}
+    gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 0.75rem;
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e2e8f0;
+    }
+    
+    .managementBar button {
+        background-color: #3b82f6 !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.875rem !important;
+        font-weight: 500 !important;
+        border-radius: 0.5rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+    
+    .managementBar button:first-of-type {
+        background-color: #10b981 !important;
+    }
+    
+    .managementBar button:last-of-type {
+        background-color: #d14081 !important;
+    }
+    
+    .managementBar button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .managementBar button:first-of-type:hover {
+        background-color: #059669 !important;
+    }
+    
+    .managementBar button:last-of-type:hover {
+        background-color: #f082ac !important;
+    }
+    
+    .managementBar button:nth-of-type(2):hover {
+        background-color: #ef4444 !important;
+    }
+    
+    .managementBar button:nth-of-type(2) {
+        background-color: #f87171 !important;
+    }
+    
+    .managementBar button:disabled {
+        opacity: 0.6 !important;
+        cursor: not-allowed !important;
+        transform: none !important;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .managementBar {
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: stretch;
+        }
 
-.btn {
-    margin-right: 32px !important
+        .managementBar button {
+            width: 100% !important;
+            justify-content: center !important;
+        }
 }
