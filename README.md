@@ -4,6 +4,7 @@ The purpose of the app is to help users with tasks managemnt, having bunch of us
 ## Table of Contents
 
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [API Endpoints](#api-endpoints)
 - [Swagger Documentation](#swagger-documentation)
 
@@ -37,6 +38,25 @@ The purpose of the app is to help users with tasks managemnt, having bunch of us
     ```bash
     make start-fe
     ```
+
+## Configuration
+
+`SECRET_KEY`, `DEBUG` and `ALLOWED_HOSTS` are read from the environment, and the
+defaults in `core/core/settings.py` are development-only. The dev server runs
+without any configuration; to override, copy the example file and edit it:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `SECRET_KEY` | `django-insecure-change-me` | Set to a real random value outside development. |
+| `DEBUG` | `true` | Any value other than `true` turns it off. |
+| `ALLOWED_HOSTS` | empty | Comma-separated, e.g. `example.com,www.example.com`. |
+
+`.env` belongs at the repo root and is gitignored; `.env.example` is the tracked
+template.
 
 ## API Endpoints
 
