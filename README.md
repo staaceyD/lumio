@@ -1,12 +1,15 @@
 # lumio
-It is full stack web application that uses React on the frontend an Django on the back end.
-The purpose of the app is to help users with tasks managemnt, having bunch of useful features 
+
+A full-stack task management app: React on the frontend, Django REST Framework on
+the backend.
+
 ## Table of Contents
 
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [API Endpoints](#api-endpoints)
 - [Swagger Documentation](#swagger-documentation)
+- [Linting](#linting)
 
 ## Installation
 
@@ -16,7 +19,7 @@ The purpose of the app is to help users with tasks managemnt, having bunch of us
    git clone https://github.com/staaceyD/lumio
    ```
 
-2. Install dependencies and activate virtural env for the back end:
+2. Install dependencies and activate the virtual env for the backend:
 
     ```bash
     make init-be
@@ -78,7 +81,6 @@ To generate updated file use the following command:
 make gen-api-docs
 ```
 
-<!-- TODO -->
 ## Linting
 
 It's highly recommended that you install the pre-commit hook - this will
@@ -86,5 +88,15 @@ automatically lint your code each time you commit.
 
 From the root of the project do this:
 
+```bash
 brew install pre-commit
 pre-commit install
+```
+
+The same checks run in CI on every push and pull request. To run them yourself:
+
+```bash
+make lint-be     # check formatting
+make format-be   # apply it
+make test-be     # Django test suite
+```

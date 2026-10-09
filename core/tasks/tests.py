@@ -1,19 +1,17 @@
-from django.test import TestCase
-
-# Create your tests here.
-
-from django.urls import reverse
-from rest_framework import status
 import uuid
 
+from django.test import TestCase
+from django.urls import reverse
+from rest_framework import status
+
 from .models import Task
+
+# Create your tests here.
 
 
 class TaskRelatedViewTests(TestCase):
     def setUp(self):
-        self.task = Task.objects.create(
-            title="test title"
-        )
+        self.task = Task.objects.create(title="test title")
 
     def test_list_tasks(self):
         url = reverse("tasks")
@@ -36,7 +34,7 @@ class TaskRelatedViewTests(TestCase):
         response = self.client.post(url, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
+
     def test_get_task(self):
         url = reverse(f"task", args=[self.task.id])
         response = self.client.get(url)
@@ -84,9 +82,7 @@ class TaskRelatedViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_multiple_tasks(self):
-        task2 = Task.objects.create(
-            title="test title 2"
-        )
+        task2 = Task.objects.create(title="test title 2")
         url = reverse(f"delete-multiple-tasks", args=[f"{self.task.id},{task2.id}"])
         response = self.client.delete(url)
 
