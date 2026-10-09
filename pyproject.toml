@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "task management system"
 authors = ["Anastasiia Derevianko <aderevianko@proton.me>"]
 readme = "README.md"
+# This is an application, not a distributable package: the Django project lives
+# in core/ and there is no lumio/ package to install.
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.13"

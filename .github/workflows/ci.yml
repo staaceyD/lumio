@@ -20,7 +20,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install Poetry
-        run: pipx install poetry
+        run: pipx install poetry==2.5.1
 
       - name: Install dependencies
         run: poetry install --no-interaction
