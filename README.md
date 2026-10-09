@@ -5,11 +5,20 @@ the backend.
 
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [API Endpoints](#api-endpoints)
 - [Swagger Documentation](#swagger-documentation)
 - [Linting](#linting)
+
+## Screenshots
+
+Tasks in a sortable grid, with priority, status, time spent and due date.
+
+![The task list](docs/screenshots/tasks.jpg)
+
+![Creating a task](docs/screenshots/new-task.jpg)
 
 ## Installation
 
