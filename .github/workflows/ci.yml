@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Poetry
+        run: pipx install poetry==2.5.1
+
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: isort
+        run: poetry run isort --check-only --profile black --project core --skip-glob '*/migrations/*' core/
+
+      - name: black
+        run: poetry run black --check --exclude '.*migrations/.*' core/
+
+      - name: Django checks
+        run: poetry run python core/manage.py check
+
+      - name: Test
+        run: poetry run python core/manage.py test core
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build

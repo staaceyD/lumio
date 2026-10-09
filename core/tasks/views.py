@@ -52,7 +52,7 @@ def delete_multiple_tasks(request, task_ids):
 
     return Response(
         {"message": f"{deleted_count} tasks deleted successfully"},
-        status=status.HTTP_204_NO_CONTENT,
+        status=status.HTTP_200_OK,
     )
 
 

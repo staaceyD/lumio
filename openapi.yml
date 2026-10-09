@@ -2,12 +2,14 @@ openapi: 3.0.3
 info:
   title: lumio
   version: 1.0.0
-  description: tasks managemnt app
+  description: task management app
 paths:
-  /tasks/:
+  /labels/:
     get:
-      operationId: root_retrieve
-      description: Returns a list of Task model instances.
+      operationId: labels_retrieve
+      description: Returns a list of labels created by user.
+      tags:
+      - labels
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -20,8 +22,10 @@ paths:
                 $ref: '#/components/schemas/Tasks'
           description: ''
     post:
-      operationId: root_create
-      description: Creates a new post by authenticated user
+      operationId: labels_create
+      description: Creates a new label by user
+      tags:
+      - labels
       requestBody:
         content:
           application/json:
@@ -45,17 +49,118 @@ paths:
               schema:
                 $ref: '#/components/schemas/Tasks'
           description: ''
-  /tasks/{task_ids}/:
+  /labels/{label_id}:
+    patch:
+      operationId: labels_partial_update
+      description: Updates a single label.
+      parameters:
+      - in: path
+        name: label_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - labels
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTasks'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTasks'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTasks'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+          description: ''
     delete:
-      operationId: root_destroy
+      operationId: labels_destroy
+      description: Deletes a single label instance.
+      parameters:
+      - in: path
+        name: label_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - labels
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /tasks/:
+    get:
+      operationId: tasks_retrieve
+      description: Returns a list of Task model instances.
+      tags:
+      - tasks
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+          description: ''
+    post:
+      operationId: tasks_create
+      description: Creates a new task by user
+      tags:
+      - tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tasks'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Tasks'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Tasks'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+          description: ''
+  /tasks/{task_ids}:
+    delete:
+      operationId: tasks_destroy
       description: Deletes multiple Task model instances.
       parameters:
       - in: path
         name: task_ids
         schema:
           type: string
-          pattern: ^([0-9a-f-]+,?)+$
+          pattern: ^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12},?)+$
         required: true
+      tags:
+      - tasks
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -65,7 +170,7 @@ paths:
           description: No response body
   /tasks/{task_id}:
     get:
-      operationId: root_retrieve_2
+      operationId: tasks_retrieve_2
       description: Returns a single Task model instance.
       parameters:
       - in: path
@@ -74,6 +179,8 @@ paths:
           type: string
           format: uuid
         required: true
+      tags:
+      - tasks
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -86,7 +193,7 @@ paths:
                 $ref: '#/components/schemas/Tasks'
           description: ''
     patch:
-      operationId: root_partial_update
+      operationId: tasks_partial_update
       description: Updates a single Task model instance.
       parameters:
       - in: path
@@ -95,6 +202,8 @@ paths:
           type: string
           format: uuid
         required: true
+      tags:
+      - tasks
       requestBody:
         content:
           application/json:
@@ -118,7 +227,7 @@ paths:
                 $ref: '#/components/schemas/Tasks'
           description: ''
     delete:
-      operationId: root_destroy_2
+      operationId: tasks_destroy_2
       description: Deletes a single Task model instance.
       parameters:
       - in: path
@@ -127,6 +236,8 @@ paths:
           type: string
           format: uuid
         required: true
+      tags:
+      - tasks
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -143,6 +254,14 @@ components:
           type: string
           format: uuid
           readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
         title:
           type: string
           maxLength: 100
@@ -159,13 +278,9 @@ components:
           type: string
           nullable: true
           maxLength: 100
-        label:
-          type: string
-          nullable: true
-          maxLength: 100
         due_date:
           type: string
-          format: date-time
+          format: date
           nullable: true
         minutes_spent:
           type: integer
@@ -178,14 +293,11 @@ components:
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
+        labels:
+          type: array
+          items:
+            type: string
+            format: uuid
     Tasks:
       type: object
       properties:
@@ -193,6 +305,14 @@ components:
           type: string
           format: uuid
           readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
         title:
           type: string
           maxLength: 100
@@ -209,13 +329,9 @@ components:
           type: string
           nullable: true
           maxLength: 100
-        label:
-          type: string
-          nullable: true
-          maxLength: 100
         due_date:
           type: string
-          format: date-time
+          format: date
           nullable: true
         minutes_spent:
           type: integer
@@ -228,14 +344,11 @@ components:
           maximum: 9223372036854775807
           minimum: -9223372036854775808
           format: int64
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
+        labels:
+          type: array
+          items:
+            type: string
+            format: uuid
       required:
       - created_at
       - id
